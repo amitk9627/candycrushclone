@@ -12,8 +12,9 @@ const candyColors = [
 const App = () => {
   const [currColorArr, setCurrrColorArr] = useState([]);
   const [data, setData] = useState("")
-  const [score, setScore] =useState(0);
-console.log(score)
+  const [score, setScore] = useState(0);
+  const [reset, setReset] = useState(false);
+
   const checkForColumnOfThree = (id) => {
 
     for (let i = 0; i <= 79; i++) {
@@ -46,9 +47,9 @@ console.log(score)
       if (RowFour.every((square) => currColorArr[square] === decidedColor)) {
         RowFour.forEach(square => currColorArr[square] = "")
       }
-       moveIntoSquareBelow()
+      moveIntoSquareBelow()
     }
-   
+
   }
   const checkForRowOfThree = (id) => {
 
@@ -70,14 +71,14 @@ console.log(score)
       const firstRow = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
       const isFirstRow = firstRow.includes(i);
       if (isFirstRow && currColorArr[i] === '') {
-        setScore(score+1)
+        setScore(score + 1)
         let randomNo = Math.floor(Math.random() * candyColors.length);
         currColorArr[i] = candyColors[randomNo];
       }
       if (currColorArr[i + width] === "") {
         currColorArr[i + width] = currColorArr[i]
         currColorArr[i] = "";
-      }else{
+      } else {
         let randomNo = Math.floor(Math.random() * candyColors.length);
         currColorArr[i] = candyColors[randomNo];
       }
@@ -119,27 +120,31 @@ console.log(score)
 
     return () => clearInterval(timer)
   }, [data, moveIntoSquareBelow])
-
+  const handleReset = () => {
+    setScore(0)
+    createBoard()
+  }
 
   return (
     <div className="App">
       <div className="game">
         {
           currColorArr.map((currcandy, i) =>
-            <img
+            <span
               key={i}
               src=""
-              alt={i}
+              
               style={{ backgroundColor: currcandy }}
               data-id={i}
 
               onClick={handleClick}
-            />
+            >{i}</span>
           )
         }
       </div>
       <div>
-        <p>total :- {score}</p>
+        <p><button onClick={handleReset}>Reset</button></p>
+        <p>score :- {score}</p>
       </div>
     </div>
   );
